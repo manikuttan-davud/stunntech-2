@@ -8,86 +8,28 @@ class DummyTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        
-        backgroundColor: Colors.white,
-      title: Padding(
-        padding: const EdgeInsets.all(10),
-        child: SizedBox(
-          width: 241.w,
-          height:33.h,
-          child: Center(
-            child: TextField(
-              scrollPadding: const EdgeInsets.all(10),
-             
-                        decoration: InputDecoration(
-                          //TODO:issue in padding
-                            hintText: "どこで働きますか？",
-                            hintStyle:
-                                const TextStyle(fontSize: 12, color:Color.fromRGBO(48, 48, 48, 0.15)),
-                            filled: true,
-                            fillColor:colorF7F7F7,
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide:
-                                    const BorderSide(color: Colors.transparent)),
-                                    //for circular edge
-                                     focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide:
-                                    const BorderSide(color: Colors.transparent))),
-                      ),
-          ),
-                    
-        ),
-      ),
-      actions:  [
-        Padding(
-          padding: EdgeInsets.only(left: 15.74.w),
-          child: const Icon(Icons.filter,color:Color.fromRGBO(48, 48, 48, 0.35),),
-        ),
-        Padding(
-          padding:  EdgeInsets.only(left: 12.25.w,right: 16.w),
-          child: const Icon(Icons.favorite_outline,color: colorFF6262,),
-        )
-      ],
-      ),
-      //sized box used instead of container (for whitespaces)
+      appBar:  PreferredSize(
+        preferredSize: Size.fromHeight(70.h) ,
+        //the widget contins textfiel,filter icon,favourite icon
+        child: const AppBarWidget()),
+     
       body: SizedBox(
-        //list view builder used for listing cards
+        
         child: ListView.builder(
           itemCount: 5,
          
           itemBuilder: ((context, index) =>  Padding(
             
-            padding: const EdgeInsets.only(left: 17,top: 17,right: 19),
-            //stack is used to overlay one widget onto another widget
+            padding:  EdgeInsets.only(left: 17.w,top: 17.h,right: 19.w),
+           
             child: Stack(
               children:[ SizedBox(child: Padding(
                 padding:  EdgeInsets.symmetric(horizontal: 3.w),
-                child: const RepeatCard(),
+                //repeatation of cards
+                child: const JobCard(),
               )),
-              //positiones is used to fix the location of a widget
-              Positioned(
-                top: 159.h,
-                child: Container(
-                  width: 74.w,
-                  height: 20.h,
-                  decoration: const BoxDecoration(
-                    color: colorFF6262
-                  ),
-                  child: const Center(
-                    child: Text('本日まで',
-                    //Text style can be used for changing size,weight,color
-                style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    color:colorFFFFFF
-                ),
-                ),
-                  ) ,
-                ),
-              ),
+              //widget that overlay jobcard
+              const StackWidget(),
              
               ]
             ),
@@ -96,9 +38,153 @@ class DummyTwo extends StatelessWidget {
     );
   }
 }
+
+class StackWidget extends StatelessWidget {
+  const StackWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 159.h,
+      child: Container(
+        width: 74.w,
+        height: 20.h,
+        decoration: const BoxDecoration(
+          color: colorFF6262
+        ),
+        child: const Center(
+          child: Text('本日まで',
+         
+      style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w700,
+          color:colorFFFFFF
+      ),
+      ),
+        ) ,
+      ),
+    );
+  }
+}
+
+class AppBarWidget extends StatelessWidget {
+  const AppBarWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      
+      backgroundColor: Colors.white,
+    title: const Padding(
+      padding: EdgeInsets.all(10),
+      child: SearchBar(),
+    ),
+   
+    actions:  [
+      FilterActionButton(onPressed: () => print("filter pressed"),),
+      Padding(
+        padding:  EdgeInsets.only(left: 12.25.w,right: 16.w),
+        child: FavouriteActionButton(onPressed: ()=> print("Favourite pressed"),),
+      )
+    ],
+    );
+  }
+}
+
+class FavouriteActionButton extends StatelessWidget {
+  final Function onPressed;
+  const FavouriteActionButton({
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+     onTap: () => onPressed(),
+      child: const Icon(Icons.favorite_outline,color: colorFF6262,));
+  }
+}
+
+class FilterActionButton extends StatelessWidget {
+  final Function onPressed;
+  const FilterActionButton({
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onPressed(),
+      child: Padding(
+        padding: EdgeInsets.only(left: 15.74.w),
+        child: const Icon(Icons.filter,color:Color.fromRGBO(48, 48, 48, 0.35),),
+      ),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  const SearchBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return  SizedBox(
+        width: 241.w,
+        height:33.h,
+        child: Center(
+          child: TextField(
+            scrollPadding: const EdgeInsets.all(10),
+           
+                      decoration: InputDecoration(
+                        //TODO:issue in padding
+                          hintText: "どこで働きますか？",
+                          hintStyle:
+                              const TextStyle(fontSize: 12, color:Color.fromRGBO(48, 48, 48, 0.15)),
+                          filled: true,
+                          fillColor:colorF7F7F7,
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                                  
+                                   focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide:
+                                  const BorderSide(color: Colors.transparent))),
+                    ),
+        ),
+                  
+      );
+  }
+}
 //Extracted widget
-class RepeatCard extends StatelessWidget {
-  const RepeatCard({
+class JobCard extends StatelessWidget {
+  ///This is a JobCard
+  const JobCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap:(() =>  Navigator.pushNamed(context, '/FirstScreen')
+ ) ,
+ //widget that contains image and other text
+      child: const CardWidget(),
+    );
+  }
+}
+
+class CardWidget extends StatelessWidget {
+  const CardWidget({
     Key? key,
   }) : super(key: key);
 
@@ -115,7 +201,11 @@ class RepeatCard extends StatelessWidget {
             width: 325.w,
             height: 186.h,
              decoration: const BoxDecoration(
-        image: DecorationImage(image: AssetImage('lib/assets/images/スクリーンショット 2022-06-08 11.42 1.jpg'),
+              //TODO:change image url from api
+              //TODO:
+        image: DecorationImage(image: AssetImage(
+          
+          'lib/assets/images/スクリーンショット 2022-06-08 11.42 1.jpg'),
         fit: BoxFit.fitWidth,
         ),
         borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
@@ -133,12 +223,13 @@ class RepeatCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 7.h,),
-          //last widget(extracted widget)
+          //widget contains last text and icon (row)
           const LastWidget(),
           SizedBox(height: 15.h,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              //repeated Text style
               const RepeatStyle(text: '5月 31日（水）09 : 00 ~ 16 : 00 （休憩60分）',),
             
           
@@ -219,7 +310,7 @@ class LastWidget extends StatelessWidget {
     );
   }
 }
-//Extracted widget
+
 class RepeatStyle extends StatelessWidget {
  final String text;
    const RepeatStyle({
