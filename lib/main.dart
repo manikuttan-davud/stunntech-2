@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project__one/screens/dummy2.dart';
 import 'package:project__one/screens/home_screen.dart';
 
 import 'screens/dummy.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
               // is not restarted.
               primarySwatch: Colors.blue,
             ),
-            home: const DummyHome(),
+            home: DummyTwo(),
           )),
       designSize: const Size(361, 789),
     );
